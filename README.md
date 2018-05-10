@@ -52,6 +52,7 @@ You can manipulate the size of the three sets by changing the global constants `
 The neural network is consisted of an input layer that accepts four inputs, two hidden layers (the first hidden layer has 5 nodes and the second has 2 nodes) and an output layer with three nodes. All nodes are fully connected in each layer.
 
 ![ANNDiagram]
+
 Image source: https://www.neuraldesigner.com/learning/examples/iris_flowers_classification
 
 The output layer produces a distribution of probability on the three labels and makes the prediction by choosing the label with the largest probability. 
