@@ -29,7 +29,7 @@ Sepal length, sepal width, petal length, and petal width.
         -t {training mode}: Manipulate the hyperparameters that trains the classifier
 
 
-### Example Output:
+## Example Output:
 
 ![ExampleWithMomentum]
 
