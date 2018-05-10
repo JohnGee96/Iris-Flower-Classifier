@@ -11,7 +11,7 @@
 
 ## Problem Statement:
 
-**To build a neural network based classifier for identifying the three types of Iri flower s**: Iris Setosa, Iris Versicolour, and Iris Virginica, given the following features:
+**To build a neural network based classifier for identifying the three types of Iri flowers**: Iris Setosa, Iris Versicolour, and Iris Virginica, given the following features:
 
 Sepal length, sepal width, petal length, and petal width.
 
