@@ -117,6 +117,22 @@ For example:
 
     accuracy = sum of correctness over test set / number of sample in test set
 
+Training can stop early (i.e. did not iterate for the number of epochs) for one of the following conditions:
+
+    1. Reaching target loss threshold
+    2. Model starts to overfit
+    3. Loss is growing instead of reducing
+
+You can modify these stop conditions with the following constants in `training.py`
+
+    # Every N iteration will check if need to stop training early
+    CHECKPOINT_ITERATION = 50
+    # Target loss threshold to stop training once met
+    LOSS_THRESHOLD       = 0.025
+    # Allow the loss to fluctuate by this amount
+    FLUCTUATION_RANGE    = 0.15
+    # Stop training when training loss and validation loss differ by this amount
+    GRACE_RANGE          = 0.2
 
 ## Reflection:
 

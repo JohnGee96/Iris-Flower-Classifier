@@ -16,6 +16,16 @@ VALIDATING_SIZE_PER_CLASS = 10
 # NOTE: must be a factor of TRAINING_SIZE_PER_CLASS 
 BATCH_SIZE_PER_CLASS      = 15
 
+# Every N iteration will check if need to stop training early
+CHECKPOINT_ITERATION = 50
+# Target loss threshold to stop training once met
+LOSS_THRESHOLD       = 0.025
+# Allow the loss to fluctuate by this amount
+FLUCTUATION_RANGE    = 0.15
+# Stop training when training loss and validation loss differ by this amount
+GRACE_RANGE          = 0.2
+
+
 class TrainANN(object):
     def __init__(self, lr, momentum, init_w_mag, init_bias, epochs):
         self.training_size_per_class = TRAINING_SIZE_PER_CLASS
@@ -40,10 +50,12 @@ class TrainANN(object):
             self.training_loss_over_epoch.append(self.training_loss)
             # Validate NN on validating data
             self.validate()
-            self.testing_loss_over_epoch.append(self.nn.error.value)
+            self.testing_loss_over_epoch.append(self.validation_loss)
             # Record accuracy on test set
             self.test()
             self.accuracy_over_epoch.append(self.test_accuracy)
+            if self.stop_early(i):
+                break
 
     def setup_data(self):
         self.data = Data(CLASSES, NUM_FEATURES)
@@ -75,6 +87,7 @@ class TrainANN(object):
         self.nn.sample.value       = self.data.validation_samples
         self.nn.sample_label.value = self.data.validation_labels
         self.nn.forward()
+        self.validation_loss = self.nn.error.value
 
     def test(self):
         self.nn.sample.value = self.data.testing_samples
@@ -126,3 +139,21 @@ class TrainANN(object):
     def predict_samples(self, samples):
         prediction = self.nn.run_samples(samples)
         return [self.data.encoding_to_class(v) for v in prediction]
+
+    def stop_early(self, iteration):
+        if iteration % CHECKPOINT_ITERATION == 0 and iteration >= CHECKPOINT_ITERATION:
+            # Stop if overfitting
+            if self.validation_loss - self.training_loss >= GRACE_RANGE:
+                print("\nTRAINING STOPPED: Starts to Overfit")
+                return True
+            # Stop if reached loss threshold
+            elif self.training_loss <= LOSS_THRESHOLD:
+                print("\nTRAINING STOPPED: Reached Loss Threshold")
+                return True
+            # Compare current loss with prev loss. Stop if loss starts to grow
+            elif self.training_loss - self.training_loss_over_epoch[iteration - CHECKPOINT_ITERATION] >= FLUCTUATION_RANGE:
+                print("\nTRAINING STOPPED: Growing Loss")
+                return True
+            else:
+                return False
+        return False
