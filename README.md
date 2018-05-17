@@ -186,3 +186,7 @@ Overfitting but following a recovery.
 4. Combination of Learning Rate Annealing and Momentum Annealing
 
     For exploration purpose, I can try to slowly decay the learning rate and at the same time grow the momentum over the training time. 
+
+## Acknowledgement
+
+The structure in file `nn.py` is modeled after the lesson on `miniflow` in Udacity's Self Driving Car Nano-Degree Program, which imitates the implementation of TensorFlow.
